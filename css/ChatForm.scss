@@ -46,3 +46,10 @@
     @extend %font-weight-bolder;
   }
 }
+
+// Dark mode customizations
+@media (prefers-color-scheme: dark) {
+  #chat-model {
+    border-top: none;
+  }
+}

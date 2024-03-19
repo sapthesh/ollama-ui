@@ -63,7 +63,7 @@
         <!-- Chat title -->
         <span id="chat-title" class="col grw" contenteditable="" title="Edit chat title"></span>
         <button id="hamburger-menu" class="hamburger-menu button col" title="Collapse or expand the sidebar">
-          <svg width="16" height="16" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <svg class="icon" width="16" height="16" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <rect x="1" y="1" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1"></rect>
             <!-- line 2/3 to the right -->
             <line x1="16" y1="1" x2="16" y2="23" stroke="currentColor" stroke-width="1"></line>
@@ -85,14 +85,14 @@
 
           <div class="row">
             <button id="new-chat-button" class="button" title="New chat">
-              <svg width="16" height="16" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg class="icon" width="16" height="16" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <rect x="1" y="1" width="22" height="22" fill="white" stroke="currentColor" stroke-width="1"></rect>
                 <line x1="12" y1="6" x2="12" y2="18" stroke="currentColor" stroke-width="1"></line>
                 <line x1="6" y1="12" x2="18" y2="12" stroke="currentColor" stroke-width="1"></line>
               </svg>
             </button>
             <button id="search-button" class="button" title="Search chats">
-              <svg width="24" height="24" viewbox="0 0 24 24" preserveaspectratio="xMidYMid meet">
+              <svg class="icon" width="24" height="24" viewbox="0 0 24 24" preserveaspectratio="xMidYMid meet">
                 <circle cx="12" cy="12" r="8" style="fill: #fff; stroke: currentColor"></circle>
                 <line x1="2" y1="22" x2="6" y2="18" style="stroke: currentColor"></line>
               </svg>
@@ -112,12 +112,9 @@
           </div>
         </aside>
       </div>
-      <div id="chat-model" class="p-2 text-small">
-        <div class="p-2">
-          <small>Talking to
-            <span class="chat-model-name"></span>
-          </small>
-        </div>
+      <div id="chat-model" class="p-2">
+        Talking to
+        <span class="chat-model-name"></span>
         <ul class="chat-model-list hidden"></ul>
       </div>
       <div id="chat-form">

@@ -29,3 +29,12 @@
 
   z-index: 3;
 }
+
+
+// Dark mode customizations
+@media (prefers-color-scheme: dark) {
+  .list-item.selected {
+    background-color: #42424230;
+  }
+}
+

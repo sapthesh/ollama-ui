@@ -20,3 +20,11 @@
   margin: 6px 0;
   transition: 0.4s;
 }
+
+// Dark mode customizations
+@media (prefers-color-scheme: dark) {
+  #chat-header {
+    border-bottom: none;
+  }
+}
+

@@ -35,3 +35,14 @@
 
   font-size: 2rem;
 }
+
+// Dark mode customizations
+@media (prefers-color-scheme: dark) {
+  %box-shadow {
+    box-shadow: none;
+  }
+
+  %box-shadow-modal {
+    box-shadow: none;
+  }
+}

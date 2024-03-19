@@ -24,3 +24,10 @@
   min-width: 0;
   max-width: 0;
 }
+
+// Dark mode customizations
+@media (prefers-color-scheme: dark) {
+  #sidebar {
+    background-color: transparent;
+  }
+}
