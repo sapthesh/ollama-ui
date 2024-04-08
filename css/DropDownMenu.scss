@@ -35,3 +35,13 @@
     left: auto;
   }
 }
+
+// Dark mode customizations
+@media (prefers-color-scheme: dark) {
+  .drop-down-menu-items {
+    button {
+      background-color: var(--white);
+    }
+  }
+}
+

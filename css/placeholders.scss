@@ -4,17 +4,14 @@
 
 %font-weight-bold {
   font-variation-settings: 'wght' 400;
-  color: var(--blue);
 }
 
 %font-weight-bolder {
   font-variation-settings: 'wght' 600;
-  color: var(--blue);
 }
 
 %font-weight-boldest {
-  font-variation-settings: 'wght' 900;
-  color: var(--blue);
+  font-variation-settings: 'wght' 700;
 }
 
 %box-shadow {
@@ -37,4 +34,15 @@
   @extend %font-weight-boldest;
 
   font-size: 2rem;
+}
+
+// Dark mode customizations
+@media (prefers-color-scheme: dark) {
+  %box-shadow {
+    box-shadow: none;
+  }
+
+  %box-shadow-modal {
+    box-shadow: none;
+  }
 }
