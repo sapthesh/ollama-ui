@@ -21,7 +21,7 @@
     "@parcel/compressor-gzip": "^2.11.0",
     "@parcel/reporter-bundle-analyzer": "^2.11.0",
     "@parcel/transformer-sass": "^2.11.0",
-    "cssnano": "^6.0",
+    "cssnano": "^7.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1",
     "eslint-config-standard": "^17.1",
