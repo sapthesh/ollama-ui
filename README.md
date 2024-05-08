@@ -69,6 +69,7 @@ To run the Ollama UI using [Caddy](https://caddyserver.com/), execute the follow
 
 ```bash
 $ git clone git@github.com:christianhellsten/ollama-html-ui.git
+$ brew install caddy
 $ caddy run
 ```
 
@@ -88,18 +89,27 @@ $ docker build -t ollama-html-ui .
 $ docker run -p 80:80 ollama-html-ui
 ```
 
-<details>
-  <summary>Contributing</summary>
-Clone the repository:
+**Using Parcel**
+
+First, clone the repository and install the dependencies:
 
 ```bash
 $ git clone git@github.com:christianhellsten/ollama-html-ui.git
 $ cd ollama-html-ui
-$ yarn global add parcel-bundler
+$ yarn add --dev parcel
 # Alternatively, use npm:
-# npm install -g parcel-bundler
-$ npm install
-$ parcel index.html
+# npm install --save-dev parcel
+```
+
+Run the ollama-html-ui using parcel:
+
+```bash
+$ yarn parcel index.html
+```
+
+Open the UI using a browser:
+
+```bash
 $ open http://locahost:1234
 ```
 
@@ -119,53 +129,53 @@ $ node test
 ```bash
 $ parcel build index.html
 ```
+
   </summary>
 </details>
-
 
 <details>
   <summary>Tasks</summary>
 
-  - [ ] Personas / Characters / Custom GPTs
-  - [ ] Ollama authentication
-  - [ ] Edit message / response
-  - [ ] Clear chat
-  - [ ] CSP
-  - [ ] Speech recognition
-  - [ ] Image upload / multi-modal
-  - [ ] Markdown support
-  - [ ] Fork chat
-  - [ ] Fork chat before / after message
+- [ ] Personas / Characters / Custom GPTs
+- [ ] Ollama authentication
+- [ ] Edit message / response
+- [ ] Clear chat
+- [ ] CSP
+- [ ] Speech recognition
+- [ ] Image upload / multi-modal
+- [ ] Markdown support
+- [ ] Fork chat
+- [ ] Fork chat before / after message
 
-  ## Done
+## Done
 
-  - [x] Mark message as good, bad, flagged
-  - [x] Export chat messages to JSON
-  - [x] Keyboard shortcuts
-  - [x] Dark & light theme
-  - [x] Export chat messages to JSON
-  - [x] Keyboard shortcuts
-  - [x] Keyboard shortcuts
-  - [x] Dark & light theme
-  - [x] Delete message / response
-  - [x] Ollama chat API / chat memory
-  - [x] IndexedDB persistence
-  - [x] Model parameters
-  - [x] System prompt
-  - [x] Copy message to clipboard
-  - [x] Select model in settings (global)
-  - [x] Select model in chat (local)
-  - [x] Search chats
-  - [x] Delete Chat
-  - [x] Select model
-  - [x] Save settings
-  - [x] View settings
-  - [x] Clear chats
-  - [x] Edit chat
-  - [x] New chat
-  - [x] Abort response
-  - [x] Send message
-  - [x] UI tests: https://nodejs.org/api/test.html
+- [x] Mark message as good, bad, flagged
+- [x] Export chat messages to JSON
+- [x] Keyboard shortcuts
+- [x] Dark & light theme
+- [x] Export chat messages to JSON
+- [x] Keyboard shortcuts
+- [x] Keyboard shortcuts
+- [x] Dark & light theme
+- [x] Delete message / response
+- [x] Ollama chat API / chat memory
+- [x] IndexedDB persistence
+- [x] Model parameters
+- [x] System prompt
+- [x] Copy message to clipboard
+- [x] Select model in settings (global)
+- [x] Select model in chat (local)
+- [x] Search chats
+- [x] Delete Chat
+- [x] Select model
+- [x] Save settings
+- [x] View settings
+- [x] Clear chats
+- [x] Edit chat
+- [x] New chat
+- [x] Abort response
+- [x] Send message
+- [x] UI tests: https://nodejs.org/api/test.html
 
   </summary>
 </details>
@@ -203,6 +213,17 @@ $ parcel build index.html
     - Model
     - System prompt
     - Model parameters
+
+  </summary>
+</details>
+
+<details>
+  <summary>Troubleshooting</summary>
+    If you experience compilation errors, try deleting the cache directory:
+
+    ```bash
+    rm -rf .parcel-cache/
+    ```
 
   </summary>
 </details>
