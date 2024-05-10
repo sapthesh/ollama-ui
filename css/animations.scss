@@ -16,7 +16,7 @@ ul {
 
 // Modal dialogs
 .modal {
-  opacity: 0%;
+  opacity: 0;
   transition: opacity 0.5s ease;
 
   .modal-content {
@@ -26,13 +26,14 @@ ul {
 }
 
 .modal.show {
-  opacity: 100%;
+  opacity: 1;
   transition: opacity 0.5s ease;
 
   .modal-content {
     transform: scale(1); /* Scale to original size */
     transition: transform 0.5s ease-out;
   }
+
   pointer-events: auto; /* Allow interactions */
 }
 

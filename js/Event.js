@@ -1,17 +1,11 @@
 export class Event {
-  static listen(eventName, handler, target) {
-    if (target === null || target === undefined) {
-      target = window;
-    }
-    target.addEventListener(eventName, (event) => {
+  static listen(eventName, handler) {
+    window.addEventListener(eventName, (event) => {
       handler(event.detail);
     });
   }
 
-  static emit(eventName, data, target) {
-    if (target === null || target === undefined) {
-      target = window;
-    }
+  static emit(eventName, data) {
     let log = `${eventName}`;
     if (data?.id) {
       log += ` id: ${data.id}`;
@@ -21,6 +15,6 @@ export class Event {
       detail: data || {},
       bubbles: true, // This makes the event bubble up through the DOM
     });
-    target.dispatchEvent(event);
+    window.dispatchEvent(event);
   }
 }

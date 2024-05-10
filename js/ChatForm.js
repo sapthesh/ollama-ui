@@ -1,4 +1,4 @@
-// TODO: Move code here from App.js and ChatArea.js
+// TODO: Move code here from App.js
 export class ChatForm {
   constructor() {
     this.chatHistory = document.getElementById('chat-history');

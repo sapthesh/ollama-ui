@@ -4,8 +4,6 @@ import { Chat } from './models/Chat.js';
 import { ChatMessage } from './models/ChatMessage.js';
 import { Settings } from './models/Settings.js';
 
-// TODO: Move all actions here?
-// TODO: Cache current chat here
 export class AppController {
   static async updateChat(chat, data) {
     Object.assign(chat, data);
