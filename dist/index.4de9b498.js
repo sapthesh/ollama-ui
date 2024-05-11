@@ -1081,8 +1081,7 @@ class Sidebar {
             const matches = await Promise.all(chats.map(async (chat)=>{
                 // Search chat title
                 let match = regex.test(chat.title);
-                if (queryContent) match ||= regex.test(chat.content);
-                // Search chat messages
+                // Search chat messages, if not already matched
                 if (queryContent && !match) {
                     const messages = await chat.getMessages();
                     match ||= messages.some((message)=>regex.test(message.content));
