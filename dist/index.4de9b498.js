@@ -626,13 +626,13 @@ class App {
         // this.api = new OpenAiApi();
         this.settingsDialog = new (0, _settingsDialogJs.SettingsDialog)({
             domId: "settings-dialog",
-            buttonId: "settings-button",
-            title: "Global settings",
+            buttonClass: "settings-button",
+            title: "Settings",
             templateId: "settings-dialog-template"
         });
         this.chatSettingsDialog = new (0, _chatSettingsDialogJs.ChatSettingsDialog)({
             domId: "chat-settings-dialog",
-            buttonId: "chat-settings-button",
+            buttonClass: "chat-settings-button",
             title: "Chat settings",
             templateId: "settings-dialog-template"
         });
@@ -975,6 +975,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Event", ()=>Event);
 class Event {
+    // TODO: Memory leaks?
     static listen(eventName, handler) {
         window.addEventListener(eventName, (event)=>{
             handler(event.detail);
@@ -1167,6 +1168,7 @@ class Chat extends (0, _baseModelJs.BaseModel) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "BaseModel", ()=>BaseModel);
+var _eventJs = require("../Event.js");
 var _databaseJs = require("../Database.js");
 var _migrationsJs = require("../Migrations.js");
 class BaseModel {
@@ -1176,13 +1178,23 @@ class BaseModel {
     async create() {
         const key = await this.constructor.db.add(this.constructor.storeName, this);
         if (!this.id) this.id = key;
+        this.emitEvent("Created");
         return this;
     }
     async save() {
-        return await this.constructor.db.put(this.constructor.storeName, this);
+        const result = await this.constructor.db.put(this.constructor.storeName, this);
+        this.emitEvent("Updated");
+        return result;
     }
     async delete() {
-        return await this.constructor.db.delete(this.constructor.storeName, this.id);
+        const result = await this.constructor.db.delete(this.constructor.storeName, this.id);
+        this.emitEvent("Deleted");
+        return result;
+    }
+    emitEvent(type) {
+        const modelName = this.constructor.name;
+        const eventName = modelName.charAt(0).toLowerCase() + modelName.slice(1);
+        (0, _eventJs.Event).emit(eventName + type, this);
     }
     jsonify() {
         return JSON.stringify(this);
@@ -1243,7 +1255,7 @@ class BaseModel {
     }
 }
 
-},{"../Database.js":"fN3ar","../Migrations.js":"4uD6o","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fN3ar":[function(require,module,exports) {
+},{"../Event.js":"ZKUT3","../Database.js":"fN3ar","../Migrations.js":"4uD6o","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fN3ar":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Database", ()=>Database);
@@ -1281,15 +1293,18 @@ class Database {
     }
     async get(storeName, id) {
         const store = await this.transaction(storeName, "readonly");
-        return this.handleRequest("get", store.get(id));
+        const result = this.handleRequest("get", store.get(id));
+        return result;
     }
     async put(storeName, data) {
         const store = await this.transaction(storeName, "readwrite");
-        return this.handleRequest("put", store.put(data));
+        const result = await this.handleRequest("put", store.put(data));
+        return result;
     }
     async delete(storeName, id) {
         const store = await this.transaction(storeName, "readwrite");
-        return this.handleRequest("delete", store.delete(id));
+        const result = this.handleRequest("delete", store.delete(id));
+        return result;
     }
     async getAll(storeName) {
         const store = await this.transaction(storeName, "readwrite");
@@ -1370,8 +1385,6 @@ class AppController {
     static async updateChat(chat, data) {
         Object.assign(chat, data);
         await chat.save();
-        // TODO: Move to BaseModel
-        (0, _eventJs.Event).emit("chatUpdated", chat);
     }
     static async createChat(data) {
         if (!data) data = {};
@@ -1875,12 +1888,29 @@ class DropDownMenu {
             if (menuElement) {
                 const dropDownMenu = menuElement.querySelector(".drop-down-menu-items");
                 if (dropDownMenu) this.toggleMenu(dropDownMenu);
-            }
+            } else // If clicked outside, hide any visible dropdown menus
+            this.hideAllMenus();
         });
     }
     toggleMenu(menu) {
-        menu.classList.toggle("hidden");
-        menu.classList.toggle("visible");
+        if (menu.classList.contains("visible")) {
+            // If menu is currently visible, remove 'visible' class immediately
+            menu.classList.remove("visible");
+            menu.classList.add("hidden");
+        } else {
+            menu.classList.remove("hidden");
+            menu.classList.add("visible");
+        }
+    }
+    hideAllMenus() {
+        // Hide all menus by removing 'visible' and adding 'hidden'
+        const menus = document.querySelectorAll(".drop-down-menu-items");
+        menus.forEach((menu)=>{
+            if (menu.classList.contains("visible")) {
+                menu.classList.remove("visible");
+                menu.classList.add("hidden");
+            }
+        });
     }
 }
 
@@ -1896,7 +1926,7 @@ var _settingsJs = require("./models/Settings.js");
 class SettingsDialog extends (0, _modalJs.Modal) {
     constructor(options){
         super(options);
-        this.showButton = document.getElementById(options.buttonId);
+        this.showButtons = document.querySelectorAll("." + options.buttonClass);
         this.urlInput = this.modal.querySelector("#input-url");
         this.modelInput = this.modal.querySelector("#input-model");
         this.systemPromptInput = this.modal.querySelector("#input-system-prompt");
@@ -1913,7 +1943,9 @@ class SettingsDialog extends (0, _modalJs.Modal) {
         this.systemPromptInput.addEventListener("blur", this.handleSystemPromptUpdated.bind(this));
         this.modelParametersInput.addEventListener("blur", ()=>this.handleModelParametersUpdated.bind(this));
         this.modelList.onClick(this.handleModelUpdated.bind(this));
-        this.showButton.addEventListener("click", this.show.bind(this));
+        this.showButtons.forEach((button)=>{
+            button.addEventListener("click", this.show.bind(this));
+        });
         this.refreshModelsButton.addEventListener("click", this.refreshModels.bind(this));
         this.closeButton.addEventListener("click", this.hide.bind(this));
     }
@@ -2174,10 +2206,11 @@ class ChatModelInfo {
         this.nameElement.textContent = this.chat?.model;
     }
     bindEventListeners() {
-        // Event.listen('chatDeleted', this.handleChatDeleted.bind(this));
-        (0, _eventJs.Event).listen("chatSelected", this.handleChatSelected.bind(this));
+        (0, _eventJs.Event).listen("chatDeleted", this.handleChatUpdated.bind(this));
+        (0, _eventJs.Event).listen("chatSelected", this.handleChatUpdated.bind(this));
+        (0, _eventJs.Event).listen("chatUpdated", this.handleChatUpdated.bind(this));
     }
-    handleChatSelected(chat) {
+    handleChatUpdated(chat) {
         this.chat = chat;
         this.render();
     }
@@ -2279,6 +2312,17 @@ class ChatArea {
         const goodButton = messageClone.querySelector(".good-chat-message-button");
         const badButton = messageClone.querySelector(".bad-chat-message-button");
         const flagButton = messageClone.querySelector(".flag-chat-message-button");
+        const flagButtons = [
+            goodButton,
+            badButton,
+            flagButton
+        ];
+        const setFlagSelected = function(flagButton) {
+            flagButtons.forEach((btn)=>{
+                btn.classList.remove("selected");
+            });
+            flagButton.classList.add("selected");
+        };
         if (message.quality == "bad") badButton.classList.add("selected");
         else if (message.quality == "good") goodButton.classList.add("selected");
         else if (message.quality == "flagged") flagButton.classList.add("selected");
@@ -2299,16 +2343,19 @@ class ChatArea {
         flagButton.addEventListener("click", async ()=>{
             (0, _uinotificationJs.UINotification).show("Flagged message").autoDismiss();
             message.quality = "flagged";
+            setFlagSelected(flagButton);
             await message.save();
         });
         goodButton.addEventListener("click", async ()=>{
             (0, _uinotificationJs.UINotification).show("Marked message as good").autoDismiss();
             message.quality = "good";
+            setFlagSelected(goodButton);
             await message.save();
         });
         badButton.addEventListener("click", async ()=>{
             (0, _uinotificationJs.UINotification).show("Marked message as bad").autoDismiss();
             message.quality = "bad";
+            setFlagSelected(badButton);
             await message.save();
         });
         return {
@@ -2373,14 +2420,22 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Hoverable", ()=>Hoverable);
 class Hoverable {
-    constructor(element){
+    constructor(element, onMouseoverCallback, onMouseoutCallback){
         this.element = element;
+        this.onMouseoverCallback = onMouseoverCallback;
+        this.onMouseoutCallback = onMouseoutCallback;
         element.hoverable = this;
         this.bindEventListeners();
     }
     bindEventListeners() {
-        this.element.addEventListener("mouseover", ()=>this.onMouseover());
-        this.element.addEventListener("mouseout", ()=>this.onMouseout());
+        this.element.addEventListener("mouseover", ()=>{
+            this.onMouseover();
+            if (this.onMouseoverCallback) this.onMouseoverCallback();
+        });
+        this.element.addEventListener("mouseout", ()=>{
+            this.onMouseout();
+            if (this.onMouseoutCallback) this.onMouseoutCallback();
+        });
     }
     onMouseover() {
         this.element.classList.add("hover");

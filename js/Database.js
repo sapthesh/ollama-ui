@@ -40,17 +40,20 @@ export class Database {
 
   async get(storeName, id) {
     const store = await this.transaction(storeName, 'readonly');
-    return this.handleRequest('get', store.get(id));
+    const result = this.handleRequest('get', store.get(id));
+    return result;
   }
 
   async put(storeName, data) {
     const store = await this.transaction(storeName, 'readwrite');
-    return this.handleRequest('put', store.put(data));
+    const result = await this.handleRequest('put', store.put(data));
+    return result;
   }
 
   async delete(storeName, id) {
     const store = await this.transaction(storeName, 'readwrite');
-    return this.handleRequest('delete', store.delete(id));
+    const result = this.handleRequest('delete', store.delete(id));
+    return result;
   }
 
   async getAll(storeName) {

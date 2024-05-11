@@ -8,8 +8,6 @@ export class AppController {
   static async updateChat(chat, data) {
     Object.assign(chat, data);
     await chat.save();
-    // TODO: Move to BaseModel
-    Event.emit('chatUpdated', chat);
   }
 
   static async createChat(data) {

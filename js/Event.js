@@ -1,4 +1,5 @@
 export class Event {
+  // TODO: Memory leaks?
   static listen(eventName, handler) {
     window.addEventListener(eventName, (event) => {
       handler(event.detail);

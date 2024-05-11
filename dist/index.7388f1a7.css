@@ -99,7 +99,7 @@ html {
   }
 }
 
-#chat-model-info .chat-model-name, .user-chat-message {
+.user-chat-message {
   font-variation-settings: "wght" 600;
 }
 
@@ -286,7 +286,7 @@ svg {
 }
 
 .icon-menu:before {
-  content: "⋯";
+  content: "⋮";
 }
 
 .icon-user:before {
@@ -357,11 +357,6 @@ svg {
   border-radius: .1rem;
   padding: .35rem;
   line-height: .5rem;
-}
-
-.modal-header .button:hover {
-  position: relative;
-  top: 1px;
 }
 
 .modal-header h2 {
@@ -467,19 +462,27 @@ button {
 }
 
 .button {
-  padding: .75rem 1rem;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: .5rem .75rem;
 }
 
 .button i {
+  vertical-align: middle;
   display: inline-block;
 }
 
-.button i[class^="icon-"].selected {
-  filter: grayscale(0%);
+.button:hover {
+  position: relative;
+  top: 1px;
 }
 
 .button-sm {
-  padding: .25rem;
+  padding: .25rem .5rem;
+}
+
+.button:hover i[class^="icon-"], .button.selected i[class^="icon-"] {
+  filter: grayscale(0%);
 }
 
 .button-small {
@@ -727,7 +730,7 @@ ul li {
   flex-grow: 1;
   width: 100%;
   max-width: 1024px;
-  padding: .5rem;
+  padding-top: 1rem;
   display: flex;
   overflow-y: auto;
 }
@@ -836,7 +839,8 @@ ul li {
 }
 
 #chat-model-info {
-  padding: .25rem .75rem;
+  padding: .25rem;
+  box-shadow: inset 1px 1px 2px #ddd;
 }
 
 #chat-title {
@@ -871,6 +875,10 @@ ul li {
   padding: 0;
 }
 
+#new-chat-button {
+  padding: .5rem 1.25rem;
+}
+
 .drop-down-menu {
   position: relative;
 }
@@ -901,6 +909,11 @@ ul li {
 .drop-down-menu-right .drop-down-menu-items {
   left: auto;
   right: 0 !important;
+}
+
+.drop-down-menu-top .drop-down-menu-items {
+  top: auto;
+  bottom: 100%;
 }
 
 .notification {

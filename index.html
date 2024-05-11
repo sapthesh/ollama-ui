@@ -34,8 +34,7 @@
           title="Edit chat title"
         ></span>
         <button
-          id="settings-button"
-          class="button"
+          class="settings-button button"
           title="Application settings"
         >
           <svg class="icon-settings" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,11 +89,10 @@
           <!-- Chats -->
           <ul id="chat-list" class="row"></ul>
         </aside>
-        <!-- Chat messages -->
-        <div id="chat-history"></div>
-        <aside id="right-sidebar" class="col">
-          <div id="chat-menu" class="drop-down-menu drop-down-menu-right">
-            <button id="chat-menu-button" class="button col" title="Chat menu">
+        <!-- Chat sidebar -->
+        <aside id="chat-sidebar" class="col">
+          <div id="chat-menu" class="drop-down-menu">
+            <button class="chat-menu-button button col" title="Chat menu">
               <i class="icon-menu"></i>
             </button>
             <div class="drop-down-menu-items hidden">
@@ -134,23 +132,30 @@
                 <i class="icon-export">Export chat</i>
               </button>
               <button
-                id="chat-settings-button"
-                class="button row"
+                class="button row chat-settings-button"
                 title="Chat settings"
               >
                 <i class="icon-settings">Chat settings</i>
               </button>
             </div>
           </div>
-          <button id="scroll-to-top-button" class="row button">
+          <button id="scroll-to-top-button" class="row button" title="Scroll to top">
             <i class="icon-scroll-to-top"></i>
           </button>
-          <button id="scroll-to-end-button" class="row button">
+          <button id="scroll-to-end-button" class="row button" title="Scroll to bottom">
             <i class="icon-scroll-to-end"></i>
           </button>
         </aside>
+        <!-- Chat message history -->
+        <div id="chat-history"></div>
       </div>
-      <div id="chat-model-info">Talking to: <span class="chat-model-name"></span></div>
+        <!-- Chat model -->
+      <div id="chat-model-info">
+        <button class="button chat-settings-button button-sm col" title="Chat settings">
+          <i class="chat-model-name"></i>
+          <i class="icon-menu"></i>
+        </button>
+      </div>
       <div id="chat-form">
         <!-- Chat input and button -->
         <div class="textarea">
@@ -188,20 +193,16 @@
           <div class="modal-body">
             <div class="input">
               <label class="" for="input-url" class="hidden">URL</label>
-              <input
-                  id="input-url"
-                  autofocus
-                  class="col"
-                  type="url"
-                  required
-                  class="input"
-                  placeholder="Example: http://localhost:11434"
-                  />
-            </div>
-            <div class="input">
-              <label class="" for="model-list">Model</label>
               <div class="row">
-                <ul id="model-list" class="col"></ul>
+                <input
+                    id="input-url"
+                    autofocus
+                    class="col"
+                    type="url"
+                    required
+                    class="input"
+                    placeholder="Example: http://localhost:11434"
+                    />
                 <button
                     class="refresh-models-button button col"
                     title="Refresh model list"
@@ -209,6 +210,10 @@
                     <i class="icon-refresh"></i>
                 </button>
               </div>
+            </div>
+            <div class="input">
+              <label class="" for="model-list">Model</label>
+              <ul id="model-list" class="col"></ul>
             </div>
             <div class="input">
               <label class="" for="input-system-prompt">System prompt</label>
@@ -242,31 +247,31 @@
           <div class="user-icon you-icon">You</div>
           <div class="hoverable chat-message-menu">
             <button
-                class="copy-chat-message-button button-sm"
+                class="copy-chat-message-button button-sm button"
                 title="Copy chat message to clipboard"
                 >
                 <i class="icon-copy copy-button"></i>
             </button>
             <button
-                class="good-chat-message-button copy-button button-sm"
+                class="good-chat-message-button copy-button button-sm button"
                 title="Good chat message"
                 >
                 <i class="icon-good"></i>
             </button>
             <button
-                class="bad-chat-message-button button-sm"
+                class="bad-chat-message-button button-sm button"
                 title="Bad chat message"
                 >
                 <i class="icon-bad"></i>
             </button>
             <button
-                class="flag-chat-message-button button-sm"
+                class="flag-chat-message-button button-sm button"
                 title="Flag chat message"
                 >
                 <i class="icon-flag"></i>
             </button>
             <button
-                class="delete-chat-message-button button-sm"
+                class="delete-chat-message-button button-sm button"
                 title="Delete chat message"
                 >
                 <i class="icon-delete"></i>

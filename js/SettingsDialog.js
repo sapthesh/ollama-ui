@@ -7,7 +7,7 @@ import { Settings } from './models/Settings.js';
 export class SettingsDialog extends Modal {
   constructor(options) {
     super(options);
-    this.showButton = document.getElementById(options.buttonId);
+    this.showButtons = document.querySelectorAll('.' + options.buttonClass);
     this.urlInput = this.modal.querySelector('#input-url');
     this.modelInput = this.modal.querySelector('#input-model');
     this.systemPromptInput = this.modal.querySelector('#input-system-prompt');
@@ -35,7 +35,9 @@ export class SettingsDialog extends Modal {
       this.handleModelParametersUpdated.bind(this),
     );
     this.modelList.onClick(this.handleModelUpdated.bind(this));
-    this.showButton.addEventListener('click', this.show.bind(this));
+    this.showButtons.forEach((button) => {
+      button.addEventListener('click', this.show.bind(this));
+    });
     this.refreshModelsButton.addEventListener(
       'click',
       this.refreshModels.bind(this),

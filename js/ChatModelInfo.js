@@ -17,11 +17,12 @@ export class ChatModelInfo {
   }
 
   bindEventListeners() {
-    // Event.listen('chatDeleted', this.handleChatDeleted.bind(this));
-    Event.listen('chatSelected', this.handleChatSelected.bind(this));
+    Event.listen('chatDeleted', this.handleChatUpdated.bind(this));
+    Event.listen('chatSelected', this.handleChatUpdated.bind(this));
+    Event.listen('chatUpdated', this.handleChatUpdated.bind(this));
   }
 
-  handleChatSelected(chat) {
+  handleChatUpdated(chat) {
     this.chat = chat;
     this.render();
   }

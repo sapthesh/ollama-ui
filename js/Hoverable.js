@@ -1,13 +1,25 @@
 export class Hoverable {
-  constructor(element) {
+  constructor(element, onMouseoverCallback, onMouseoutCallback) {
     this.element = element;
+    this.onMouseoverCallback = onMouseoverCallback;
+    this.onMouseoutCallback = onMouseoutCallback;
     element.hoverable = this;
     this.bindEventListeners();
   }
 
   bindEventListeners() {
-    this.element.addEventListener('mouseover', () => this.onMouseover());
-    this.element.addEventListener('mouseout', () => this.onMouseout());
+    this.element.addEventListener('mouseover', () => {
+      this.onMouseover();
+      if (this.onMouseoverCallback) {
+        this.onMouseoverCallback();
+      }
+    });
+    this.element.addEventListener('mouseout', () => {
+      this.onMouseout();
+      if (this.onMouseoutCallback) {
+        this.onMouseoutCallback();
+      }
+    });
   }
 
   onMouseover() {

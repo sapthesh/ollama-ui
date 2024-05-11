@@ -31,13 +31,13 @@ export class App {
     // this.api = new OpenAiApi();
     this.settingsDialog = new SettingsDialog({
       domId: 'settings-dialog',
-      buttonId: 'settings-button',
-      title: 'Global settings',
+      buttonClass: 'settings-button',
+      title: 'Settings',
       templateId: 'settings-dialog-template',
     });
     this.chatSettingsDialog = new ChatSettingsDialog({
       domId: 'chat-settings-dialog',
-      buttonId: 'chat-settings-button',
+      buttonClass: 'chat-settings-button',
       title: 'Chat settings',
       templateId: 'settings-dialog-template',
     });

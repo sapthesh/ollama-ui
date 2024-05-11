@@ -34,3 +34,10 @@
     left: auto;
   }
 }
+
+.drop-down-menu-top {
+  .drop-down-menu-items {
+    bottom: 100%; /* Align bottom of menu with top of the button */
+    top: auto; /* Reset default positioning */
+  }
+}
