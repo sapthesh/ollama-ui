@@ -22,7 +22,6 @@ export class AppController {
     }
     const chat = await new Chat(data).create();
     Settings.setCurrentChatId(chat.id);
-    Event.emit('chatCreated', chat);
     Event.emit('chatSelected', chat);
     return chat;
   }

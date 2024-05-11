@@ -74,25 +74,37 @@ export class Sidebar {
     const queryContent = query.length > 2; // Nobody wants to query content based on one character?
     const regex = new RegExp(query, 'i'); // 'i' for case-insensitive matching
     console.log(`Search ${query}`);
-    Chat.getAll().then((chats) => {
-      const matches = chats
-        .filter((chat) => {
-          let match = regex.test(chat.title);
-          if (queryContent) {
-            match ||= regex.test(chat.content);
+    Chat.getAll()
+      .then(async (chats) => {
+        const matches = await Promise.all(
+          chats.map(async (chat) => {
+            // Search chat title
+            let match = regex.test(chat.title);
+
+            // Search chat messages, if not already matched
+            if (queryContent && !match) {
+              const messages = await chat.getMessages();
+              match ||= messages.some((message) => regex.test(message.content));
+            }
+
+            // Return chat id
+            return match ? chat.id : null;
+          }),
+        );
+
+        // Filter out nulls - chats that didn't match
+        return matches.filter((match) => match !== null);
+      })
+      .then((matches) => {
+        this.element.querySelectorAll('.chat-list-item').forEach((item) => {
+          if (matches.includes(item.data.id)) {
+            // Now matches the type
+            item.classList.remove('hidden');
+          } else {
+            item.classList.add('hidden');
           }
-          return match;
-        })
-        .map((chat) => chat.id);
-      this.element.querySelectorAll('.chat-list-item').forEach((item) => {
-        if (matches.includes(item.data.id)) {
-          // Now matches the type
-          item.classList.remove('hidden');
-        } else {
-          item.classList.add('hidden');
-        }
+        });
       });
-    });
   }
 
   toggle() {

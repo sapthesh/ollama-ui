@@ -1077,12 +1077,22 @@ class Sidebar {
         const queryContent = query.length > 2; // Nobody wants to query content based on one character?
         const regex = new RegExp(query, "i"); // 'i' for case-insensitive matching
         console.log(`Search ${query}`);
-        (0, _chatJs.Chat).getAll().then((chats)=>{
-            const matches = chats.filter((chat)=>{
+        (0, _chatJs.Chat).getAll().then(async (chats)=>{
+            const matches = await Promise.all(chats.map(async (chat)=>{
+                // Search chat title
                 let match = regex.test(chat.title);
                 if (queryContent) match ||= regex.test(chat.content);
-                return match;
-            }).map((chat)=>chat.id);
+                // Search chat messages
+                if (queryContent && !match) {
+                    const messages = await chat.getMessages();
+                    match ||= messages.some((message)=>regex.test(message.content));
+                }
+                // Return chat id
+                return match ? chat.id : null;
+            }));
+            // Filter out nulls - chats that didn't match
+            return matches.filter((match)=>match !== null);
+        }).then((matches)=>{
             this.element.querySelectorAll(".chat-list-item").forEach((item)=>{
                 if (matches.includes(item.data.id)) // Now matches the type
                 item.classList.remove("hidden");
@@ -1392,7 +1402,6 @@ class AppController {
         if (!data.model) data.model = (0, _settingsJs.Settings).getModel();
         const chat = await new (0, _chatJs.Chat)(data).create();
         (0, _settingsJs.Settings).setCurrentChatId(chat.id);
-        (0, _eventJs.Event).emit("chatCreated", chat);
         (0, _eventJs.Event).emit("chatSelected", chat);
         return chat;
     }
@@ -2341,19 +2350,19 @@ class ChatArea {
         });
         copyButton.dataset["target"] = domId;
         flagButton.addEventListener("click", async ()=>{
-            (0, _uinotificationJs.UINotification).show("Flagged message").autoDismiss();
+            //UINotification.show('Flagged message').autoDismiss();
             message.quality = "flagged";
             setFlagSelected(flagButton);
             await message.save();
         });
         goodButton.addEventListener("click", async ()=>{
-            (0, _uinotificationJs.UINotification).show("Marked message as good").autoDismiss();
+            //UINotification.show('Marked message as good').autoDismiss();
             message.quality = "good";
             setFlagSelected(goodButton);
             await message.save();
         });
         badButton.addEventListener("click", async ()=>{
-            (0, _uinotificationJs.UINotification).show("Marked message as bad").autoDismiss();
+            //UINotification.show('Marked message as bad').autoDismiss();
             message.quality = "bad";
             setFlagSelected(badButton);
             await message.save();

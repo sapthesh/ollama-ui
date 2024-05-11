@@ -150,19 +150,19 @@ export class ChatArea {
     });
     copyButton.dataset['target'] = domId;
     flagButton.addEventListener('click', async () => {
-      UINotification.show('Flagged message').autoDismiss();
+      //UINotification.show('Flagged message').autoDismiss();
       message.quality = 'flagged';
       setFlagSelected(flagButton);
       await message.save();
     });
     goodButton.addEventListener('click', async () => {
-      UINotification.show('Marked message as good').autoDismiss();
+      //UINotification.show('Marked message as good').autoDismiss();
       message.quality = 'good';
       setFlagSelected(goodButton);
       await message.save();
     });
     badButton.addEventListener('click', async () => {
-      UINotification.show('Marked message as bad').autoDismiss();
+      //UINotification.show('Marked message as bad').autoDismiss();
       message.quality = 'bad';
       setFlagSelected(badButton);
       await message.save();
