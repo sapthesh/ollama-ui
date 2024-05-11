@@ -1,3 +1,4 @@
+import { Event } from '../Event.js';
 import { Database } from '../Database.js';
 import { Migrations } from '../Migrations.js';
 
@@ -11,18 +12,32 @@ export class BaseModel {
     if (!this.id) {
       this.id = key;
     }
+    this.emitEvent('Created');
     return this;
   }
 
   async save() {
-    return await this.constructor.db.put(this.constructor.storeName, this);
+    const result = await this.constructor.db.put(
+      this.constructor.storeName,
+      this,
+    );
+    this.emitEvent('Updated');
+    return result;
   }
 
   async delete() {
-    return await this.constructor.db.delete(
+    const result = await this.constructor.db.delete(
       this.constructor.storeName,
       this.id,
     );
+    this.emitEvent('Deleted');
+    return result;
+  }
+
+  emitEvent(type) {
+    const modelName = this.constructor.name;
+    const eventName = modelName.charAt(0).toLowerCase() + modelName.slice(1);
+    Event.emit(eventName + type, this);
   }
 
   jsonify() {

@@ -8,8 +8,6 @@ export class AppController {
   static async updateChat(chat, data) {
     Object.assign(chat, data);
     await chat.save();
-    // TODO: Move to BaseModel
-    Event.emit('chatUpdated', chat);
   }
 
   static async createChat(data) {
@@ -24,7 +22,6 @@ export class AppController {
     }
     const chat = await new Chat(data).create();
     Settings.setCurrentChatId(chat.id);
-    Event.emit('chatCreated', chat);
     Event.emit('chatSelected', chat);
     return chat;
   }

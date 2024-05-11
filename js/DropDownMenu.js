@@ -15,12 +15,32 @@ export class DropDownMenu {
         if (dropDownMenu) {
           this.toggleMenu(dropDownMenu);
         }
+      } else {
+        // If clicked outside, hide any visible dropdown menus
+        this.hideAllMenus();
       }
     });
   }
 
   toggleMenu(menu) {
-    menu.classList.toggle('hidden');
-    menu.classList.toggle('visible');
+    if (menu.classList.contains('visible')) {
+      // If menu is currently visible, remove 'visible' class immediately
+      menu.classList.remove('visible');
+      menu.classList.add('hidden');
+    } else {
+      menu.classList.remove('hidden');
+      menu.classList.add('visible');
+    }
+  }
+
+  hideAllMenus() {
+    // Hide all menus by removing 'visible' and adding 'hidden'
+    const menus = document.querySelectorAll('.drop-down-menu-items');
+    menus.forEach((menu) => {
+      if (menu.classList.contains('visible')) {
+        menu.classList.remove('visible');
+        menu.classList.add('hidden');
+      }
+    });
   }
 }

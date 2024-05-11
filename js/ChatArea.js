@@ -118,6 +118,13 @@ export class ChatArea {
     const goodButton = messageClone.querySelector('.good-chat-message-button');
     const badButton = messageClone.querySelector('.bad-chat-message-button');
     const flagButton = messageClone.querySelector('.flag-chat-message-button');
+    const flagButtons = [goodButton, badButton, flagButton];
+    const setFlagSelected = function (flagButton) {
+      flagButtons.forEach((btn) => {
+        btn.classList.remove('selected');
+      });
+      flagButton.classList.add('selected');
+    };
 
     if (message.quality == 'bad') {
       badButton.classList.add('selected');
@@ -143,18 +150,21 @@ export class ChatArea {
     });
     copyButton.dataset['target'] = domId;
     flagButton.addEventListener('click', async () => {
-      UINotification.show('Flagged message').autoDismiss();
+      //UINotification.show('Flagged message').autoDismiss();
       message.quality = 'flagged';
+      setFlagSelected(flagButton);
       await message.save();
     });
     goodButton.addEventListener('click', async () => {
-      UINotification.show('Marked message as good').autoDismiss();
+      //UINotification.show('Marked message as good').autoDismiss();
       message.quality = 'good';
+      setFlagSelected(goodButton);
       await message.save();
     });
     badButton.addEventListener('click', async () => {
-      UINotification.show('Marked message as bad').autoDismiss();
+      //UINotification.show('Marked message as bad').autoDismiss();
       message.quality = 'bad';
+      setFlagSelected(badButton);
       await message.save();
     });
     return { element: messageDiv, textElement: textSpan };

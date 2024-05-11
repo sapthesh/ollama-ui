@@ -11,9 +11,10 @@
 }
 
 #chat-model-info {
-  padding: 0.25rem 0.75rem;
+  padding: 0.25rem;
+  box-shadow: 1px 1px 2px #ddd inset;
 
   .chat-model-name {
-    @extend %font-weight-bolder;
+    // @extend %font-weight-bolder;
   }
 }

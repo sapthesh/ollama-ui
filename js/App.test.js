@@ -72,7 +72,7 @@ class AppTest {
   async showSettings() {
     // await this.page.click('#chats-menu-button')
     await this.screenshot();
-    await this.page.click('#settings-button');
+    await this.page.click('.settings-button');
     await expect(this.page.locator('#settings-dialog')).toBeVisible();
   }
 
