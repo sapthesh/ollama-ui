@@ -7,7 +7,8 @@
   "scripts": {
     "server": "node scripts/server.js",
     "test": "yarn run test:unit && yarn run test:mobile && yarn run test:video && yarn run test:demo",
-    "test:unit": "node --test --test-reporter=spec",
+    "test:ci": "export GITHUB_ACTIONS=true && yarn run test:unit && yarn run test:playwright",
+    "test:unit": "node --test --test-reporter=spec js/**.test.js",
     "test:mobile": "MOBILE=true yarn run test:playwright",
     "test:video": "VIDEO=true yarn run test:playwright",
     "test:playwright": "yarn playwright test",
@@ -17,7 +18,7 @@
     "format": "prettier --write \"**/*.{js,html,scss}\"",
     "lint-js": "eslint \"**/*.js\" --fix",
     "lint-css": "stylelint \"**/*.scss\" --fix",
-    "build": "parcel build index.html"
+    "build": "yarn run parcel build index.html"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.11.0",
