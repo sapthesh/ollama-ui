@@ -23,7 +23,7 @@
     "@parcel/transformer-sass": "^2.11.0",
     "cssnano": "^6.0",
     "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1",
+    "eslint-config-prettier": "^10.1",
     "eslint-config-standard": "^17.1",
     "eslint-plugin-import": "^2.29",
     "eslint-plugin-n": "^16.6",
