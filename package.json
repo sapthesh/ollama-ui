@@ -19,7 +19,7 @@
   "devDependencies": {
     "@parcel/compressor-brotli": "^2.11.0",
     "@parcel/compressor-gzip": "^2.11.0",
-    "@parcel/reporter-bundle-analyzer": "^2.11.0",
+    "@parcel/reporter-bundle-analyzer": "^2.15.4",
     "@parcel/transformer-sass": "^2.11.0",
     "cssnano": "^6.0",
     "eslint": "^8.56.0",
