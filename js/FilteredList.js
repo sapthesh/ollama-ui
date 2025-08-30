@@ -1,5 +1,5 @@
 import { List } from './List.js';
-import { DOM } from './DOM.js';
+import { DOM } from './Dom.js';
 
 export class FilteredList extends List {
   constructor(ul, items) {
