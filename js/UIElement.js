@@ -1,4 +1,4 @@
-import { DOM } from './DOM.js';
+import { DOM } from './Dom.js';
 
 export class UIElement {
   constructor(element) {
